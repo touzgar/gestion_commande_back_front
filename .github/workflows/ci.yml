@@ -26,7 +26,7 @@ jobs:
 
       - name: Test backend
         working-directory: backend
-        run: npm test --if-present
+        run: npm test --if-passWithNoTests
 
       - name: Build backend
         working-directory: backend
