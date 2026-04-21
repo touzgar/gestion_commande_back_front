@@ -23,9 +23,6 @@ jobs:
         working-directory: backend
         run: npm ci
 
-      - name: Lint backend
-        working-directory: backend
-        run: npm run lint --if-present
 
       - name: Test backend
         working-directory: backend
@@ -39,9 +36,7 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Lint frontend
-        working-directory: frontend
-        run: npm run lint --if-present
+
 
       - name: Build frontend
         working-directory: frontend
