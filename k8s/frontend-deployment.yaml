@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: your-docker-registry/frontend:latest
+          image: touzgar/gestion-frontend:latest
           ports:
             - containerPort: 80
 ---
@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: frontend
   ports:
