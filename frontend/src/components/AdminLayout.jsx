@@ -11,9 +11,11 @@ import {
   Bell,
   Search,
   Settings,
-  ChevronDown
+  ChevronDown,
+  Moon,
+  Sun
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const menuItems = [
@@ -24,15 +26,33 @@ const menuItems = [
   { path: '/admin/categories', icon: Tag, label: 'Catégories' },
 ];
 
+
 export default function AdminLayout() {
   const location = useLocation();
   const { logout, user } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('darkMode');
+    if (saved) {
+      setDarkMode(JSON.parse(saved));
+      document.documentElement.classList.toggle('dark', JSON.parse(saved));
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    document.documentElement.classList.toggle('dark', newMode);
+    localStorage.setItem('darkMode', JSON.parse(newMode));
+  };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
+    <div className={`flex h-screen bg-gradient-to-br ${darkMode ? 'from-slate-900 via-slate-800 to-slate-900 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900' : 'from-gray-50 via-white to-gray-50'} overflow-hidden`}>
+
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div 
@@ -119,19 +139,27 @@ export default function AdminLayout() {
           <div className="flex items-center gap-4 flex-1">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors"
+              className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg text-gray-600 dark:text-slate-300 transition-colors"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg flex-1 max-w-sm group focus-within:bg-white focus-within:border-emerald-300 transition-all">
-              <Search className="w-4 h-4 text-gray-400 group-focus-within:text-emerald-600 transition-colors" />
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg flex-1 max-w-sm group focus-within:bg-white dark:focus-within:bg-slate-700 focus-within:border-emerald-300 transition-all">
+              <Search className="w-4 h-4 text-gray-400 dark:text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
               <input 
                 type="text" 
                 placeholder="Search..." 
-                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-gray-500 font-medium text-gray-900"
+                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-gray-500 dark:placeholder:text-slate-400 font-medium text-gray-900 dark:text-slate-100"
               />
             </div>
+
+            <button 
+              onClick={toggleDarkMode}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg text-gray-600 dark:text-slate-300 transition-all group"
+              title="Toggle Dark Mode"
+            >
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
           </div>
 
           {/* Right Side Icons */}

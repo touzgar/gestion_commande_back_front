@@ -26,10 +26,14 @@ import {
   Users,
   X,
   Zap,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { produitService, categorieService } from '../services/api';
 import { useCart } from '../context/CartContext';
+import { toast } from 'react-hot-toast';
 
 /* ─── static data ─── */
 const whyCards = [
