@@ -15,12 +15,14 @@ import { ProduitModule } from './produits/produit.module';
 import { CommandeModule } from './commandes/commande.module';
 import { UploadModule } from './uploads/upload.module';
 import { UserModule } from './users/user.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PrometheusModule.register(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/gestion_commandes',
