@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gestion-commande-grafana-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  gestion-commande-dashboard.json: |
+    {
+      "title": "Gestion Commande Monitoring",
+      "panels": [
+        {
+          "type": "stat",
+          "title": "Services Running",
+          "targets": [
+            {
+              "expr": "count(up)",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 }
+        },
+        {
+          "type": "stat",
+          "title": "Running Pods",
+          "targets": [
+            {
+              "expr": "count(kube_pod_status_phase{phase=\"Running\"})",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 }
+        },
+        {
+          "type": "timeseries",
+          "title": "CPU Usage",
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total[5m]))",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 }
+        },
+        {
+          "type": "timeseries",
+          "title": "Memory Usage",
+          "targets": [
+            {
+              "expr": "sum(container_memory_working_set_bytes)",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 }
+        }
+      ],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "10s"
+    }
